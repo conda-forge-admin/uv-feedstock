@@ -24,10 +24,11 @@ fi
 
 if [[ "${target_platform}" == "linux-riscv64" ]]; then
   export CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_LINKER="${CC}"
-  export PKG_CONFIG_SYSROOT_DIR="${PREFIX}"
+  # Conda .pc files already contain the relocated host prefix.
+  unset PKG_CONFIG_SYSROOT_DIR
+  export PKG_CONFIG_ALLOW_CROSS=1
+  export PKG_CONFIG_LIBDIR="${PREFIX}/lib/pkgconfig"
   export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
-  export CFLAGS="${CFLAGS//-fno-plt/}"
-  export CXXFLAGS="${CXXFLAGS//-fno-plt/}"
 fi
 
 cd crates/uv
